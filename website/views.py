@@ -12,12 +12,14 @@ views = Blueprint('views', __name__)
 def home():
     if request.method == 'POST': 
         #***# 
-        ticket = request.form.get('ticket') #Gets the note from the HTML 
-
+        ticket_name = request.form.get('ticket-name') #Gets the note name from the HTML
+        ticket = request.form.get('ticket') #Gets the note desc from the HTML 
+        ticket_progress = request.form.get('ticket-progress') #Gets the note progress value from the HTML  
+        
         if len(ticket) < 1:
             flash('Note is too short!', category='error') 
         else:
-            new_ticket = Ticket(data=ticket, user_id=current_user.id)  #providing the schema for the note 
+            new_ticket = Ticket(data=ticket, name = ticket_name, progressType = ticket_progress, user_id=current_user.id)  #providing the schema for the note 
             db.session.add(new_ticket) #adding the note to the database 
             db.session.commit()
             flash('Ticket added!', category='success')
@@ -28,11 +30,32 @@ def home():
 @views.route('/delete-ticket', methods=['POST'])
 def delete_ticket():  
     ticket = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
+    #print('testing json', ticket)
     ticketId = ticket['ticketId']
     ticket = Ticket.query.get(ticketId)
     if ticket:
         if ticket.user_id == current_user.id:
             db.session.delete(ticket)
+            db.session.commit()
+
+    return jsonify({})
+
+
+@views.route('/update-ticket', methods=['POST'])
+def updateTicket():  
+    ticket = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
+    ticketId = ticket['ticketId']
+    ticketName = ticket['ticketName']
+    ticketData = ticket['ticketData']
+    #ticketProgress = ticket['ticketId']
+
+    print('Testing values for ticket edited', ticketId, ticketName, ticketData) 
+    ticket = Ticket.query.get(ticketId)
+    if ticket:
+        if ticket.user_id == current_user.id:
+            ticket.name =ticketName
+            ticket.Desc = ticketData
+            #ticket.ProgressType = progressType
             db.session.commit()
 
     return jsonify({})

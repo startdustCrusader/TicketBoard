@@ -4,15 +4,43 @@
 <ul class="list-group list-group-flush" id="ticket">
   {% for ticket in user.tickets %}
   <li class="list-group-item">
-    {{ ticket.data }}
+    Name: <cite contenteditable="true">{{ ticket.name }} </cite><br />
+    Data: <cite contenteditable="true"> {{ticket.data}} </cite><br />
+    Progress Type: {{ticket.progressType}}
+    <br />
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      onClick="updateTicket({{ ticket.id}} , '{{ticket.name}}', '{{ticket.data}}')"
+    >
+      Update2 Ticket
+    </button>
     <button type="button" class="close" onClick="deleteTicket({{ ticket.id }})">
       <span aria-hidden="true">&times;</span>
     </button>
   </li>
   {% endfor %}
 </ul>
+
+<h1 align="center">New Ticket</h1>
 <form method="POST">
+  <br />
+  <textarea name="ticket-name" id="ticket-name" class="form-control"></textarea>
   <textarea name="ticket" id="ticket" class="form-control"></textarea>
+
+  <select
+    name="ticket-progress"
+    id="ticket-progress"
+    class="form-control"
+    size="4"
+  >
+    <option value="Ideation">Ideation</option>
+    <option value="In-Progress">In-Progress</option>
+    <option value="Complete">Complete</option>
+    <option value="Hold">Hold</option>
+  </select>
+
   <br />
   <div align="center">
     <button type="submit" class="btn btn-primary">Add Ticket</button>
