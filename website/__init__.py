@@ -1,4 +1,4 @@
-#***# Done #***#
+#import RRequirements
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
@@ -9,27 +9,29 @@ DB_NAME = 'database1.db'
 #initialize Flask and adding SQL Alchemy
 #Intialize the app
 
+#Main Application 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'randomABC89897123123871937917'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
-    #assign our app to the  Flask
+    #assign our app to Flask
 
 
-    from .views import views
-    from .auth import auth    
+    from .views import views #Main ticket homePage
+    from .auth import auth    #All Login-LogOut Page
     #importing from the two views
 
     app.register_blueprint(views, url_prefix= '/')
     app.register_blueprint(auth, url_prefix= '/')
     
 
-    from .models import User, Ticket
+    from .models import User, Ticket #importing database-class objects 
     with app.app_context():
         db.create_all()
 
+    #Login manager and Auth
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
