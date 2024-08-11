@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+
+<style>
+
+
+.Master {
+    box-sizing:border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .todo-container {
+    width: 2000px;
+    height: 80vh;
+    display: flex;
+  }
+
+  .status {
+    width: 25%;
+    background-color: #f3f3f3;
+    position: relative;
+    padding-top: 60px;
+    padding: 0.5rem 1rem;
+  }
+
+  .status:nth-child(even) {
+    background-color: #e9e9e96b;
+  }
+
+  .status h1 {
+    position: relative;
+    background-color: #343434;
+    top: 0;
+    left: 0;
+    color: white;
+    margin: 0;
+    width: 100;
+    padding: 0.5rem 1rem;
+  }
+
+  .todo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    background-color: #fff;
+    box-shadow: #ccc;
+    border-radius: 4px;
+    padding: 0.2rem 2rem;
+    font-size: 1rem;
+  }
+</style>
+
+
+<Div class = "Master">
+  <Div class="todo-container">
+    <Div class="status">
+      <h1>Ideation</h1>
+      <div class = 'todo' draggable = "true">TASK1</Div>
+        <div class = 'todo'>TASK2</Div>
+          <div class = 'todo'>TASK3</Div>
+     </Div>
+
+    <Div class="status">
+      <h1>In-Progress</h1>
+    </Div>
+
+    <Div class="status">
+      <h1>Complete</h1>
+    </Div>
+
+    <Div class="status">
+      <h1>Hold</h1>
+    </Div>
+  </Div>
+
+</Div>
+
+
+<!-- Form to add new ticket -->
+<h1 align="center">New Ticket</h1>
+<form method="POST">
+  <br />
+  <textarea name="ticket-name" id="ticket-name" class="form-control"></textarea>
+  <textarea name="ticket" id="ticket" class="form-control"></textarea>
+
+  <select
+    name="ticket-progress"
+    id="ticket-progress"
+    class="form-control"
+    size="4"
+  >
+    <option value="Ideation">Ideation</option>
+    <option value="In-Progress">In-Progress</option>
+    <option value="Complete">Complete</option>
+    <option value="Hold">Hold</option>
+  </select>
+  <br />
+
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Add Ticket</button>
+  </div>
+</form>
+
+<script>
+const todos = document.querySelectorAll(".todo");
+const all_status = document.querySelectorAll(".status");
+
+let draggableTodo = null;
+
+
+
+todos.forEach((todo) => {
+  todo.addEventListener("dragstart", dragstart)
+  todo.addEventListener("dragend", dragend)
+});
+
+all_status.forEach((status) => {
+  status.addEventListener("dragover", dragOver)
+  status.addEventListener("dragenter", dragEnter)
+  status.addEventListener("dragleave", dragLeave)
+  status.addEventListener("drop", dragDrop)
+
+});
+
+
+function dragEnter(){
+  this.style.border = "1px dashed #ccc";
+  console.log("dragEnter");
+}
+
+function dragLeave(){
+  this.style.border = "None";
+  console.log("dragLeave");
+}
+
+function dragOver(e){
+  e.preventDefault();
+  console.log("dragOver");
+}
+
+function dragstart(){
+  draggableTodo = this;
+  console.log("dragstart");
+}
+
+function dragend(){
+  draggableTodo = null;
+  console.log("dragend");
+}
+
+function dragDrop(){
+  this.style.border = "None";
+  this.appendChild(draggableTodo);
+  console.log("drop");
+}
+
+  function updateTicketName(ticketId, ticketName) {
+    console.log("Test - index json - update");
+    fetch("/update-ticket", {
+      method: "POST",
+      body: JSON.stringify({
+        ticketId: ticketId,
+        ticketName: ticketName,
+      }),
+    }).then((_res) => {
+      window.location.href = "/";
+    });
+  }
+
+  function updateTicketData(ticketId, ticketData) {
+    console.log("Test2 - index json - update2");
+    fetch("/update-ticket2", {
+      method: "POST",
+      body: JSON.stringify({
+        ticketId: ticketId,
+        ticketData: ticketData,
+      }),
+    }).then((_res) => {
+      window.location.href = "/";
+    });
+  }
+
+  function updateTicketStatus(ticketId, ticketStatus) {
+    console.log("Test2 - index json - update status");
+    fetch("/update-ticket2", {
+      method: "POST",
+      body: JSON.stringify({
+        ticketId: ticketId,
+        progressType: ticketStatus,
+      }),
+    }).then((_res) => {
+      window.location.href = "/";
+    });
+  }
+
+
+</script>
+{% endblock %}

@@ -93,3 +93,23 @@ def updateTicketData():
             db.session.commit()
 
     return jsonify({})
+
+
+
+@views.route('/test', methods = ['GET', 'POST'])
+def test():
+    if request.method == 'POST': 
+        #***# 
+        ticket_name = request.form.get('ticket-name') #Gets the note name from the HTML
+        ticket = request.form.get('ticket') #Gets the note desc from the HTML 
+        ticket_progress = request.form.get('ticket-progress') #Gets the note progress value from the HTML  
+        
+        if len(ticket) < 1:
+            flash('Note is too short!', category='error') 
+        else:
+            new_ticket = Ticket(data=ticket, name = ticket_name, progressType = ticket_progress, user_id=current_user.id)  #providing the schema for the note 
+            db.session.add(new_ticket) #adding the note to the database 
+            db.session.commit()
+            flash('Ticket added!', category='success')
+
+    return render_template("test.html", user=current_user)
