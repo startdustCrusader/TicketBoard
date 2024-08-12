@@ -1,8 +1,6 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
 
 <style>
-
-
 .Master {
     box-sizing:border-box;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -43,7 +41,6 @@
   .todo{
     display: flex;
     justify-content: space-between;
-    align-items: center;
     position: relative;
     background-color: #fff;
     box-shadow: #ccc;
@@ -55,27 +52,217 @@
 
 
 <Div class = "Master">
+  <ul class="list-group list-group-flush" id="ticket">
   <Div class="todo-container">
-    <Div class="status">
-      <h1>Ideation</h1>
-      <div class = 'todo' draggable = "true">TASK1</Div>
-        <div class = 'todo'>TASK2</Div>
-          <div class = 'todo'>TASK3</Div>
-     </Div>
 
+    <!-- Generate all tickets for ideation-->
+    <Div class="status">
+        <h1>Ideation</h1>
+        {% for ticket in user.tickets %}
+        {% if ticket.progressType == 'Ideation' %}
+        <Div class = 'todo' draggable = "true">       
+          <li class="todo list-group-item">
+            Name:
+            <cite id="editableContent{{ ticket.id }}" contenteditable="true">
+              {{ ticket.name }}
+            </cite>
+            <br />
+            Data:
+            <cite id="editableContent{{ ticket.id }}2" contenteditable="true">
+              {{ticket.data}}
+            </cite>
+            <br />
+            <cite id = "progressType{{ ticket.id }}">
+            Progress Type: {{ticket.progressType}}
+            </cite>
+            <br />
+        
+            <!-- Listner to edit the Name and Data of this** ticket in contenteditable and send it backend DB editableContent**ticketNumber -->
+            <script>
+              document
+                .getElementById("editableContent{{ ticket.id }}")
+                .addEventListener("blur", function () {
+                  const content = this.innerText;
+                  console.log(content);
+                  updateTicketName({{ ticket.id }},content)
+        
+                });
+                document
+                .getElementById("editableContent{{ ticket.id }}2")
+                .addEventListener("blur", function () {
+                  const content2 = this.innerText;
+                  console.log(content2);
+                  updateTicketData({{ ticket.id }},content2)
+        
+                });
+                
+            </script>
+        
+            <!-- Delete Button for each ticket -->
+            <button type="button" class="close" onClick="deleteTicket({{ ticket.id }})">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </li>
+        </Div>
+        {% endif %}
+        {% endfor %}
+    </Div>
+
+  <!-- Generate all tickets for In-Progress-->
     <Div class="status">
       <h1>In-Progress</h1>
+      {% for ticket in user.tickets %}
+        {% if ticket.progressType == 'In-Progress' %}
+      <Div class = 'todo' draggable = "true">
+        <li class="todo list-group-item">
+          Name:
+          <cite id="editableContent{{ ticket.id }}" contenteditable="true">
+            {{ ticket.name }}
+          </cite>
+          <br />
+          Data:
+          <cite id="editableContent{{ ticket.id }}2" contenteditable="true">
+            {{ticket.data}}
+          </cite>
+          <br />
+          Progress Type: {{ticket.progressType}}
+          <br />
+      
+          <!-- Listner to edit the Name and Data of this** ticket in contenteditable and send it backend DB editableContent**ticketNumber -->
+          <script>
+            document
+              .getElementById("editableContent{{ ticket.id }}")
+              .addEventListener("blur", function () {
+                const content = this.innerText;
+                console.log(content);
+                updateTicketName({{ ticket.id }},content)
+      
+              });
+              document
+              .getElementById("editableContent{{ ticket.id }}2")
+              .addEventListener("blur", function () {
+                const content2 = this.innerText;
+                console.log(content2);
+                updateTicketData({{ ticket.id }},content2)
+      
+              });
+          </script>
+      
+          <!-- Delete Button for each ticket -->
+          <button type="button" class="close" onClick="deleteTicket({{ ticket.id }})">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </li>
     </Div>
-
-    <Div class="status">
-      <h1>Complete</h1>
-    </Div>
-
-    <Div class="status">
-      <h1>Hold</h1>
-    </Div>
+    {% endif %}
+        {% endfor %}
   </Div>
 
+
+  <!-- Generate all tickets for Complete-->
+    <Div class="status">
+      <h1>Complete</h1>
+      {% for ticket in user.tickets %}
+      {% if ticket.progressType == 'Complete' %}
+      <Div class = 'todo' draggable = "true">
+        <li class="todo list-group-item" >
+          Name:
+          <cite id="editableContent{{ ticket.id }}" contenteditable="true">
+            {{ ticket.name }}
+          </cite>
+          <br />
+          Data:
+          <cite id="editableContent{{ ticket.id }}2" contenteditable="true">
+            {{ticket.data}}
+          </cite>
+          <br />
+          Progress Type: {{ticket.progressType}}
+          <br />
+      
+          <!-- Listner to edit the Name and Data of this** ticket in contenteditable and send it backend DB editableContent**ticketNumber -->
+          <script>
+            document
+              .getElementById("editableContent{{ ticket.id }}")
+              .addEventListener("blur", function () {
+                const content = this.innerText;
+                console.log(content);
+                updateTicketName({{ ticket.id }},content)
+      
+              });
+              document
+              .getElementById("editableContent{{ ticket.id }}2")
+              .addEventListener("blur", function () {
+                const content2 = this.innerText;
+                console.log(content2);
+                updateTicketData({{ ticket.id }},content2)
+      
+              });
+          </script>
+      
+          <!-- Delete Button for each ticket -->
+          <button type="button" class="close" onClick="deleteTicket({{ ticket.id }})">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </li>
+    </Div>
+    {% endif %}
+        {% endfor %}
+  </Div>
+
+  <!-- Generate all tickets for Hold-->
+    <Div class="status">
+      <h1>Hold</h1>
+      {% for ticket in user.tickets %}
+        {% if ticket.progressType == 'Hold' %}
+      <Div class = 'todo' draggable = "true">
+        <li class="todo list-group-item">
+          Name:
+          <cite id="editableContent{{ ticket.id }}" contenteditable="true">
+            {{ ticket.name }}
+          </cite>
+          <br />
+          Data:
+          <cite id="editableContent{{ ticket.id }}2" contenteditable="true">
+            {{ticket.data}}
+          </cite>
+          <br />
+          Progress Type: {{ticket.progressType}}
+          <br />
+      
+          <!-- Listner to edit the Name and Data of this** ticket in contenteditable and send it backend DB editableContent**ticketNumber -->
+          <script>
+            document
+              .getElementById("editableContent{{ ticket.id }}")
+              .addEventListener("blur", function () {
+                const content = this.innerText;
+                console.log(content);
+                updateTicketName({{ ticket.id }},content)
+      
+              });
+              document
+              .getElementById("editableContent{{ ticket.id }}2")
+              .addEventListener("blur", function () {
+                const content2 = this.innerText;
+                console.log(content2);
+                updateTicketData({{ ticket.id }},content2)
+      
+              });
+          </script>
+      
+          <!-- Delete Button for each ticket -->
+          <button type="button" class="close" onClick="deleteTicket({{ ticket.id }})">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </li>
+    </Div>
+    {% endif %}
+        {% endfor %}
+  </Div>
+    
+    
+     <!-- todo ends here -->
+  </Div>
+</ul>
 </Div>
 
 
@@ -92,7 +279,7 @@
     class="form-control"
     size="4"
   >
-    <option value="Ideation">Ideation</option>
+    <option value="Ideation" selected="selected">Ideation</option>
     <option value="In-Progress">In-Progress</option>
     <option value="Complete">Complete</option>
     <option value="Hold">Hold</option>
@@ -154,6 +341,7 @@ function dragend(){
 function dragDrop(){
   this.style.border = "None";
   this.appendChild(draggableTodo);
+  
   console.log("drop");
 }
 
@@ -166,7 +354,7 @@ function dragDrop(){
         ticketName: ticketName,
       }),
     }).then((_res) => {
-      window.location.href = "/";
+      window.location.href = "/test";
     });
   }
 
@@ -179,7 +367,7 @@ function dragDrop(){
         ticketData: ticketData,
       }),
     }).then((_res) => {
-      window.location.href = "/";
+      window.location.href = "/test";
     });
   }
 
@@ -192,7 +380,7 @@ function dragDrop(){
         progressType: ticketStatus,
       }),
     }).then((_res) => {
-      window.location.href = "/";
+      window.location.href = "/test";
     });
   }
 

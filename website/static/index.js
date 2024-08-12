@@ -3,6 +3,6 @@ function deleteTicket(ticketId) {
     method: "POST",
     body: JSON.stringify({ ticketId: ticketId }),
   }).then((_res) => {
-    window.location.href = "/";
+    window.location.href = "/test";
   });
 }
