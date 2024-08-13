@@ -94,7 +94,22 @@ def updateTicketData():
 
     return jsonify({})
 
+@views.route('/update-ticket3', methods=['POST'])
+def updateTicketStatus():  
+    ticket = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
+    ticketId = ticket['ticketId']
+    ticketStatus = ticket['progressType']
+    #ticketProgress = ticket['ticketId']
 
+    print('Testing values for ticket edited inside update status', ticketId, ticketStatus) 
+    ticket = Ticket.query.get(ticketId)
+    if ticket:
+        if ticket.user_id == current_user.id:
+            ticket.progressType = ticketStatus
+            #ticket.ProgressType = progressType
+            db.session.commit()
+
+    return jsonify({})
 
 @views.route('/test', methods = ['GET', 'POST'])
 def test():

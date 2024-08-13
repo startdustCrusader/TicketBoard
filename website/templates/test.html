@@ -57,11 +57,11 @@
 
     <!-- Generate all tickets for ideation-->
     <Div class="status">
-        <h1>Ideation</h1>
+        <h1 id = 'WhereAmI'>Ideation</h1>
         {% for ticket in user.tickets %}
         {% if ticket.progressType == 'Ideation' %}
-        <Div class = 'todo' draggable = "true">       
-          <li class="todo list-group-item">
+        <Div class = 'todo' draggable = "true" id ={{ ticket.id }} >       
+          <li class="list-group-item">
             Name:
             <cite id="editableContent{{ ticket.id }}" contenteditable="true">
               {{ ticket.name }}
@@ -72,7 +72,7 @@
               {{ticket.data}}
             </cite>
             <br />
-            <cite id = "progressType{{ ticket.id }}">
+            <cite">
             Progress Type: {{ticket.progressType}}
             </cite>
             <br />
@@ -114,7 +114,7 @@
       {% for ticket in user.tickets %}
         {% if ticket.progressType == 'In-Progress' %}
       <Div class = 'todo' draggable = "true">
-        <li class="todo list-group-item">
+        <li class="list-group-item">
           Name:
           <cite id="editableContent{{ ticket.id }}" contenteditable="true">
             {{ ticket.name }}
@@ -165,7 +165,7 @@
       {% for ticket in user.tickets %}
       {% if ticket.progressType == 'Complete' %}
       <Div class = 'todo' draggable = "true">
-        <li class="todo list-group-item" >
+        <li class="list-group-item" >
           Name:
           <cite id="editableContent{{ ticket.id }}" contenteditable="true">
             {{ ticket.name }}
@@ -215,7 +215,7 @@
       {% for ticket in user.tickets %}
         {% if ticket.progressType == 'Hold' %}
       <Div class = 'todo' draggable = "true">
-        <li class="todo list-group-item">
+        <li class="list-group-item">
           Name:
           <cite id="editableContent{{ ticket.id }}" contenteditable="true">
             {{ ticket.name }}
@@ -315,32 +315,33 @@ all_status.forEach((status) => {
 
 function dragEnter(){
   this.style.border = "1px dashed #ccc";
-  console.log("dragEnter");
+  //console.log("dragEnter");
 }
 
 function dragLeave(){
   this.style.border = "None";
-  console.log("dragLeave");
+  //console.log("dragLeave");
 }
 
 function dragOver(e){
   e.preventDefault();
-  console.log("dragOver");
+  //console.log("dragOver");
 }
 
 function dragstart(){
   draggableTodo = this;
-  console.log("dragstart");
+  //console.log("dragstart");
 }
 
 function dragend(){
   draggableTodo = null;
-  console.log("dragend");
+  //console.log("dragend");
 }
 
 function dragDrop(){
   this.style.border = "None";
   this.appendChild(draggableTodo);
+  updateTicketStatus('1','Hold');
   
   console.log("drop");
 }
@@ -372,8 +373,8 @@ function dragDrop(){
   }
 
   function updateTicketStatus(ticketId, ticketStatus) {
-    console.log("Test2 - index json - update status");
-    fetch("/update-ticket2", {
+    console.log("Test3 - index json - update progress type");
+    fetch("/update-ticket3", {
       method: "POST",
       body: JSON.stringify({
         ticketId: ticketId,
