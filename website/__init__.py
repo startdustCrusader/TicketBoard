@@ -1,4 +1,9 @@
-#import RRequirements
+'''
+    ** This file is the init file used to initialise the application
+    ** Used to register blueprint, and login utility
+'''
+
+#import Requirements
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
@@ -6,6 +11,7 @@ from flask_login import LoginManager
 
 db = SQLAlchemy()
 DB_NAME = 'database1.db'
+
 #initialize Flask and adding SQL Alchemy
 #Intialize the app
 
@@ -26,7 +32,7 @@ def create_app():
     app.register_blueprint(views, url_prefix= '/')
     app.register_blueprint(auth, url_prefix= '/')
     
-
+    #importing DB model
     from .models import User, Ticket #importing database-class objects 
     with app.app_context():
         db.create_all()

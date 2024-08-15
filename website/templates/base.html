@@ -1,6 +1,14 @@
+<!-- 
+      ** Base File 
+      ** This base HTML will be inherited by all pages 
+      ** We will use the top navigation bar which has the Login, LogOut, Home page links
+      ** We will also use this to show the notification for creating/deleting a ticket
+-->
+
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- CSS Declaration -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -17,6 +25,8 @@
     
     <title>{% block title %}Home{% endblock %}</title>
   </head>
+
+
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
@@ -29,6 +39,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
+          
+          <!-- Different set of links for logged in members and non logged in members-->
+
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/">Home</a>
           <a class="nav-item nav-link" id="test" href="/test">Test</a>
@@ -40,6 +53,8 @@
         </div>
       </div>
     </nav>
+
+    <!-- Logic to display notifications -->
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==

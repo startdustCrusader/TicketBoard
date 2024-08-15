@@ -1,3 +1,4 @@
+#import Requirements
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
 from .models import Ticket
@@ -40,24 +41,6 @@ def delete_ticket():
 
     return jsonify({})
 
-
-# def updateTicket():  
-#     ticket = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
-#     ticketId = ticket['ticketId']
-#     ticketName = ticket['ticketName']
-#     ticketData = ticket['ticketData']
-#     #ticketProgress = ticket['ticketId']
-
-#     print('Testing values for ticket edited', ticketId, ticketName, ticketData) 
-#     ticket = Ticket.query.get(ticketId)
-#     if ticket:
-#         if ticket.user_id == current_user.id:
-#             ticket.name =ticketName
-#             ticket.Desc = ticketData
-#             #ticket.ProgressType = progressType
-#             db.session.commit()
-
-#     return jsonify({})
 
 @views.route('/update-ticket', methods=['POST'])
 def updateTicketName():  

@@ -1,5 +1,15 @@
+<!-- 
+      ** Home Page - V1 Implementation
+      ** Page will be used to create, delete, and display tickets
+      ** Each ticket is content editable
+      ** We can add, delete, update ticket data. We can also drag the tickets from one progress type to another
+      ** and it will update in the backend accordingly
+-->
+
+
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
 
+<!-- CSS file/utility styles for this page -->
 <style>
 .Master {
     box-sizing:border-box;
@@ -50,6 +60,10 @@
   }
 </style>
 
+
+<!-- **Main ticketboard used to drag and drop files. 
+    **Also gives small borders update when dragging 
+-->
 
 <Div class = "Master">
   <ul class="list-group list-group-flush" id="ticket">
@@ -262,9 +276,7 @@
     {% endif %}
         {% endfor %}
   </Div>
-    
-    
-     <!-- todo ends here -->
+  
   </Div>
 </ul>
 </Div>
@@ -295,6 +307,7 @@
   </div>
 </form>
 
+<!-- Scripts to update files -->
 <script>
 const todos = document.querySelectorAll(".todo");
 const all_status = document.querySelectorAll(".status");

@@ -1,3 +1,11 @@
+<!-- 
+      ** Home Page - V0 Implementation
+      ** Page will be used to create, delete, and display tickets
+      ** Each ticket is content editable
+      ** Currently we cannot change the values of the progress type, but we can initialise them with this value
+      ** extends base page
+-->
+
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
 
 <h1 align="center">Tickets</h1>
@@ -11,7 +19,7 @@
     Data:<cite id="editableContent{{ ticket.id }}2" contenteditable="true">{{ticket.data}} </cite><br />
     Progress Type: {{ticket.progressType}}<br />
 
-    <!-- Listner to edit the Name and Data of this** ticket in contenteditable and send it backend DB editableContent**ticketNumber -->
+    <!-- Listener to edit the Name and Data of this** ticket in contenteditable and send it backend DB with associated editableContent**ticketNumber -->
     <script>
       document
         .getElementById("editableContent{{ ticket.id }}")
@@ -66,6 +74,7 @@
 </form>
 
 <script>
+  //Update ticket name only
   function updateTicketName(ticketId, ticketName) {
     console.log("Test - index json - update");
     fetch("/update-ticket", {
@@ -78,7 +87,7 @@
       window.location.href = "/";
     });
   }
-
+  //Update ticket data only
   function updateTicketData(ticketId, ticketData) {
     console.log("Test2 - index json - update2");
     fetch("/update-ticket2", {
@@ -91,6 +100,7 @@
       window.location.href = "/";
     });
   }
+  //No update to Progress type yet
 </script>
 
 {% endblock %}
